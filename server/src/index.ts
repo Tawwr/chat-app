@@ -21,8 +21,25 @@ app.get('/', function (req, res) {
 });
 app.use('/auth', authRouter);
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
-app.listen(process.env.PORT || 7070, async () => {
-    await AppDataSource.initialize();
-    console.log('connected to DB');
+io.on('connection', (socket) => {
+  const userId = socket.handshake.query.id;
+  socket.join(userId);
+  console.log(`User ${userId} connected`);
+
+  socket.on('send-message', ({ recipients, text }) => {
+    console.log({ recipients, text });
   });
+});
+
+server.listen(process.env.PORT || 8181, async () => {
+  await AppDataSource.initialize();
+  console.log('connected to DB');
+});
