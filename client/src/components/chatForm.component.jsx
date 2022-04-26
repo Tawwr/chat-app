@@ -8,11 +8,9 @@ const ChatForm = () => {
 		initialValues: {
 			message: '',
 		},
-		validationSchema: Yup.object({
-			message: Yup.string().required('Required'),
-		}),
 		onSubmit: values => {
 			console.log(values);
+            formik.resetForm();
 		},
 	});
 	return (
@@ -25,13 +23,16 @@ const ChatForm = () => {
 			onBlur={formik.handleBlur}
 			id='message'
 			type='message'
-			variant='standard'
+			variant='outlined'
 			color='success'
 			fullWidth
+            sx={{
+                position: 'fixed', bottom: '15px',
+            }}
             InputProps={{
                 endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton disableRipple onClick={formik.handleSubmit}>
+                        <IconButton disableRipple onClick={formik.handleSubmit} disabled={!formik.values.message}>
                             <SendIcon sx={{ color: '#6C89F4' }} />
                         </IconButton>
                     </InputAdornment>

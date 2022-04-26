@@ -5,13 +5,22 @@ import {
 	Avatar,
 	Typography,
 	Badge,
-    Divider
+    Divider,
+    Grid
 } from '@mui/material';
 
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment'
 
-const Conversation = ({user}) => {
+const Conversation = ({user, setCurrentChat}) => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+    const navigate = useNavigate();
+
     const handleClick = () => {
-        console.log('clicked')
+        setCurrentChat(user);
+        console.log(user)
+        screenWidth < 768 && navigate("/chat");
     }
 	return (
 		<>
@@ -44,9 +53,17 @@ const Conversation = ({user}) => {
 						</Typography>
 					}
 					secondary={
-						<Typography component='span' variant='body2' color='text.primary'>
-							{user.lastMessage}
+                        <Grid container justifyContent="space-between">
+                            <Grid item>
+                            <Typography component='span' variant='body2' color='text.primary'>
+							{`${user.messages[user.messages.length - 1].body.substring(0, 15)}...`} 
 						</Typography>
+                            </Grid>
+                            <Grid item>
+                                {moment(user.messages[user.messages.length - 1].createdAt).format('h:mm a')}
+                            </Grid>
+                        </Grid>
+						
 					}
 				/>
 			</ListItem>
