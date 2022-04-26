@@ -27,7 +27,14 @@ const ChatForm = () => {
 			color='success'
 			fullWidth
             sx={{
-                position: 'fixed', bottom: '15px',
+                position: {
+                    xs: 'fixed',
+                    md: 'relative'
+                },
+                bottom: {
+                    xs: '0',
+    
+                }
             }}
             InputProps={{
                 endAdornment: (

@@ -4,7 +4,7 @@ import ChatForm from '../components/chatForm.component';
 import { Paper, Grid, Typography, Avatar,Box } from '@mui/material';
 import {useState, useEffect} from 'react'
 
-const Home = ({setCurrentChat, currentChat, onlineUsers }) => {
+const Home = ({setCurrentChat, currentChat, onlineUsers, setTitle }) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -13,7 +13,12 @@ const Home = ({setCurrentChat, currentChat, onlineUsers }) => {
         });
     }, [screenWidth])
 
-
+    useEffect(() => {
+        if (screenWidth < 768) {
+            setTitle('Messages')
+        }
+    }, [])
+    
 	return (
         <>
             {
