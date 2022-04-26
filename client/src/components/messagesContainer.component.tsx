@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Message from './message.component'
 import { Grid } from '@mui/material'
-import { User } from '../types'
+import { DummyUser } from '../types'
 
 type MessagesContainerProps = {
-  currentChat: User
+  currentChat: DummyUser
 }
 const MessagesContainer = ({ currentChat }: MessagesContainerProps) => {
   return (

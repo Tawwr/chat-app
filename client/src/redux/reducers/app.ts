@@ -19,10 +19,10 @@ export const appSlice = createSlice({
     signOut: (state) => {
       state.user = null
       state.token = ''
-    },
+    }
   },
 })
 
-export const { setUser, signOut, setToken } = appSlice.actions
+export const { setUser, signOut , setToken} = appSlice.actions
 
 export default appSlice.reducer

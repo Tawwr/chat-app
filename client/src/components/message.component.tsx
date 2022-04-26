@@ -1,9 +1,9 @@
 import { Grid, Typography } from '@mui/material'
-import { Message as MessageType, User } from '../types'
+import { DummyMessage as MessageType, DummyUser } from '../types'
 
 type MessageProps = {
   message: MessageType
-  user: User
+  user: DummyUser
   mobile: boolean
 }
 const Message = ({ mobile, user, message }: MessageProps) => {

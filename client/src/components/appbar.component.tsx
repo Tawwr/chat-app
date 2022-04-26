@@ -32,7 +32,7 @@ const Appbar = ({ title }:AppBarProps) => {
 			{screenWidth > 768 ? (
 				<Grid container >
 					<Grid item>
-						    <img src={require("../assets/logo.svg")} alt='logo' width='30' />
+						    <img src={require('../assets/logo.svg').default} alt='logo' width='30' />
                     </Grid>
                     <Grid item>
                         <Typography variant="h6" color="#fff">Connect</Typography>

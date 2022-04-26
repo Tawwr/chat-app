@@ -2,10 +2,10 @@ import { Avatar, Grid } from '@mui/material'
 import { useEffect } from 'react'
 import ChatForm from '../components/chatForm.component'
 import MessagesContainer from '../components/messagesContainer.component'
-import { User } from '../types'
+import { DummyUser } from '../types'
 
 type ChatProps = {
-  currentChat: User
+  currentChat: DummyUser
   setTitle: (title: string | JSX.Element) => void
 }
 

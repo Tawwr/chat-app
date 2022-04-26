@@ -1,15 +1,21 @@
 import axios from 'axios'
-import { LoginResponse, User } from '../types'
+import { User } from '../types'
 
-const URL = 'http://localhost:7070'
+export const URL = 'http://localhost:8181'
 
 const api = axios.create({
   baseURL: URL,
 })
 
 export const signUpAPI = async (
-  user: User
-): Promise<User & { token: string }> => {
+  user:  {
+    email: string
+    password: string
+    username: string
+    firstName: string
+  lastName: string
+  }
+): Promise<User> => {
   const response = await api.post('/auth/signup', user)
   return response.data
 }
@@ -20,7 +26,7 @@ export const signInAPI = async ({
 }: {
   email: string
   password: string
-}): Promise<LoginResponse> => {
+}): Promise<User> => {
     const response = await api.post('/auth/login', { email, password })
     return response.data
   

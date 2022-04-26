@@ -1,11 +1,11 @@
 import {List} from '@mui/material'
 import Conversation from './conversation.component'
 import { useState } from 'react'
-import { User } from '../types';
+import { DummyUser } from '../types';
 
 type UserListProps = {
-	onlineUsers: User[];
-	setCurrentChat: (user: User) => void;
+	onlineUsers: DummyUser[];
+	setCurrentChat: (user: DummyUser) => void;
 }
 const UserList = ({setCurrentChat, onlineUsers}:UserListProps) => {
     

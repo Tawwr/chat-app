@@ -1,20 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { connect, Socket } from 'socket.io-client'
+import { URL as BACKEND_URL } from '../api'
+import { RootState } from '../redux/store'
 
 export const SocketContext = React.createContext<Socket | undefined>(undefined)
 
+export const useSocket = () => {
+  const context = useContext(SocketContext)
+
+  if (!context) throw Error('SocketProvider must be defined')
+  return context
+}
+
 function SocketProvider({ children }: { children: React.ReactNode }) {
-  const [socket, setSocket] = useState(connect('http://localhost:8181/'))
+  const [socket, setSocket] = useState(connect(BACKEND_URL))
+  const user = useSelector((state: RootState) => state.app.user)
 
   useEffect(() => {
-    // TODO: Replace with User Id
-    const id = 5
-    setSocket(
-      connect('http://localhost:8181/', {
-        query: { id },
-      })
-    )
-    console.log('connecting id:', id)
+    if (user) {
+      const { id } = user
+      setSocket(
+        connect(BACKEND_URL, {
+          query: { id },
+        })
+      )
+      console.log('connecting id:', id)
+    }
 
     return () => {
       console.log('disconnecting')

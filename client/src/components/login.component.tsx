@@ -1,11 +1,21 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { signInAPI } from '../api'
+import { setToken, setUser, signOut } from '../redux/reducers/app'
+import { RootState } from '../redux/store'
 
 type LoginProps = {
   toggleAuth: () => void
 }
 const Login = ({ toggleAuth }: LoginProps) => {
+  const user = useSelector((state: RootState) => state.app.user)
+  const [error, setError] = useState<string>('')
+  const dispatch = useDispatch()
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -15,14 +25,25 @@ const Login = ({ toggleAuth }: LoginProps) => {
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      try {
+        const data = await signInAPI({ ...values })
+        dispatch(setUser(data))
+        dispatch(setToken(data.token))
+        setError('')
+      } catch (error) {
+        dispatch(signOut())
+        setError('something went wrong')
+      }
     },
   })
 
   const handleClick = () => {
     toggleAuth()
   }
+
+  if (user) return <Navigate to="/" replace />
+
   return (
     <Grid
       container
@@ -52,7 +73,7 @@ const Login = ({ toggleAuth }: LoginProps) => {
           }}
         >
           <Grid item>
-            <img src={require('../assets/logo.svg')} alt="logo" />
+            <img src={require('../assets/logo.svg').default} alt="logo" />
             <Typography align="center" variant="h4" color="#fff">
               Welcome Back!
             </Typography>
@@ -82,7 +103,7 @@ const Login = ({ toggleAuth }: LoginProps) => {
                 },
               }}
             >
-              <img src={require('../assets/logo.svg')} alt="logo" />
+              <img src={require('../assets/logo.svg').default} alt="logo" />
             </Grid>
 
             <form onSubmit={formik.handleSubmit}>
@@ -136,6 +157,16 @@ const Login = ({ toggleAuth }: LoginProps) => {
                   Login
                 </Button>
 
+                {error && (
+                  <Typography
+                    align="center"
+                    variant="body1"
+                    color="error"
+                    sx={{ marginTop: '20px' }}
+                  >
+                    {error}
+                  </Typography>
+                )}
                 <Typography align="center" variant="subtitle2">
                   Don't have an account?{' '}
                   <Button variant="text" onClick={handleClick}>

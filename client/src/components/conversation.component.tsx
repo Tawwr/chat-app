@@ -11,11 +11,11 @@ import {
 import moment from 'moment'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User } from '../types'
+import { DummyUser } from '../types'
 
 type ConversationProps = {
-  user: User
-  setCurrentChat: (user: User) => void
+  user: DummyUser
+  setCurrentChat: (user: DummyUser) => void
 }
 const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)

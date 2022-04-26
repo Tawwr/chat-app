@@ -1,20 +1,27 @@
-export type User = {
+// TODO: Remove Dummy user and Dummy Message
+
+export type DummyUser = {
   username: string
-  messages: Message[]
+  messages: DummyMessage[]
   sameUser: boolean
 }
 
-export type Message = {
-  body: string
-    createdAt: Date
+export type User = {
+  id: number
+  token: string
+  username: string
+  firstName: string
+  lastName: string
+  email: string
+  password: string
 }
 
-export type LoginResponse = {
-  accessToken: string
-  error?: string
+export type DummyMessage = {
+  body: string
+  createdAt: Date
 }
 
 export type AppStateType = {
   user: User | null
-  token: string
+  token:string
 }

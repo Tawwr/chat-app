@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
   try {
+    const token = req.headers.authorization;
     const user = await User.findOne({
       where: {
         email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
@@ -23,7 +24,7 @@ router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
         message: 'User not found',
       });
     }
-    return res.json({ user });
+    return res.json({ ...user, token });
   } catch (error) {
     return res.status(500).json({
       message: 'Something went wrong',
@@ -62,7 +63,7 @@ router.post('/login', async (req, res) => {
       expiresIn: '1d',
     });
 
-    return res.json({ accessToken });
+    return res.json({ ...user, token: accessToken });
   } catch (error) {
     console.log({ error });
     return res.status(500).json({
@@ -106,7 +107,7 @@ router.post('/signup', async (req, res) => {
       expiresIn: '1d',
     });
 
-    return res.status(200).json({ ...user, accessToken });
+    return res.status(200).json({ ...user, token: accessToken });
   } catch (error) {
     return res.status(400).json({
       error: error.message,

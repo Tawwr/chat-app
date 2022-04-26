@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import ChatForm from '../components/chatForm.component'
 import MessagesContainer from '../components/messagesContainer.component'
 import UserList from '../components/userList.component'
-import { User } from '../types'
+import { DummyUser } from '../types'
 
 type HomeProps = {
-  setCurrentChat: (user: User) => void
-  currentChat: User
-  onlineUsers: User[]
+  setCurrentChat: (user: DummyUser) => void
+  currentChat: DummyUser
+  onlineUsers: DummyUser[]
   setTitle: (title: string) => void
 }
 const Home = ({

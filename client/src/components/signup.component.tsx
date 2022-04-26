@@ -1,31 +1,52 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { signUpAPI } from '../api'
+import { setToken, setUser, signOut } from '../redux/reducers/app'
+import { RootState } from '../redux/store'
 
 type SignupProps = {
   toggleAuth: () => void
 }
 
 const Signup = ({ toggleAuth }: SignupProps) => {
+  const user = useSelector((state: RootState) => state.app.user)
+  const [error, setError] = useState<string>('')
+  const dispatch = useDispatch()
+
   const formik = useFormik({
     initialValues: {
       username: '',
       email: '',
       password: '',
+      firstName: '',
+      lastName: '',
     },
     validationSchema: Yup.object({
       username: Yup.string().required('Required'),
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      try {
+        const data = await signUpAPI(values)
+        dispatch(setUser(data))
+        dispatch(setToken(data.token))
+        setError('')
+      } catch (error) {
+        dispatch(signOut())
+        setError('something went wrong')
+      }
     },
   })
 
   const handleClick = () => {
     toggleAuth()
   }
+  if (user) return <Navigate to="/" replace />
 
   return (
     <Grid
@@ -56,7 +77,7 @@ const Signup = ({ toggleAuth }: SignupProps) => {
           }}
         >
           <Grid item>
-            <img src={require('../assets/logo.svg')} alt="logo" />
+            <img src={require('../assets/logo.svg').default} alt="logo" />
             <Typography align="center" variant="h4" color="#fff">
               Welcome Back!
             </Typography>
@@ -86,7 +107,7 @@ const Signup = ({ toggleAuth }: SignupProps) => {
                 },
               }}
             >
-              <img src={require('../assets/logo.svg')} alt="logo" />
+              <img src={require('../assets/logo.svg').default} alt="logo" />
             </Grid>
             <form onSubmit={formik.handleSubmit}>
               <Grid item>
@@ -101,6 +122,40 @@ const Signup = ({ toggleAuth }: SignupProps) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   label="Username"
+                  type="text"
+                  variant="standard"
+                  color="success"
+                  fullWidth
+                  sx={{ marginBottom: '20px' }}
+                />
+                <TextField
+                  error={
+                    Boolean(formik.errors.firstName) &&
+                    Boolean(formik.touched.firstName)
+                  }
+                  helperText={formik.errors.firstName}
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  label="firstName"
+                  type="text"
+                  variant="standard"
+                  color="success"
+                  fullWidth
+                  sx={{ marginBottom: '20px' }}
+                />
+                <TextField
+                  error={
+                    Boolean(formik.errors.lastName) &&
+                    Boolean(formik.touched.lastName)
+                  }
+                  helperText={formik.errors.lastName}
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  label="lastName"
                   type="text"
                   variant="standard"
                   color="success"
@@ -151,9 +206,20 @@ const Signup = ({ toggleAuth }: SignupProps) => {
                   sx={{ background: '#03CCBB' }}
                   size="large"
                   fullWidth
+                  type="submit"
                 >
                   Signup
                 </Button>
+                {error && (
+                  <Typography
+                    align="center"
+                    variant="body1"
+                    color="error"
+                    sx={{ marginTop: '20px' }}
+                  >
+                    {error}
+                  </Typography>
+                )}
 
                 <Typography align="center" variant="subtitle2">
                   Already have an account?{' '}
