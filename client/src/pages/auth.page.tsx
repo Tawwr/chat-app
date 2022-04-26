@@ -3,7 +3,10 @@ import Signup from '../components/signup.component';
 import { useEffect, useState } from 'react';
 import { Container } from '@mui/material';
 
-const Auth = ({ setTitle }) => {
+type AuthProps = {
+	setTitle: (title: string) => void
+  }
+const Auth = ({ setTitle }:AuthProps) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(true);
 
 	const toggleAuth = () => setIsLoggedIn(!isLoggedIn);

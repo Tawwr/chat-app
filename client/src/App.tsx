@@ -6,9 +6,10 @@ import Auth from './pages/auth.page';
 import Appbar from './components/appbar.component';
 import Footer from './components/footer.component';
 import { useState } from 'react';
+import { User } from './types';
 function App() {
-	const [appbarTitle, setAppbarTitle] = useState('');
-	const [onlineUsers, setOnlineUsers] = useState([
+	const [appbarTitle, setAppbarTitle] = useState<string | JSX.Element>('');
+	const [onlineUsers, setOnlineUsers] = useState<User[]>([
 		{
 			username: 'Islam',
 			messages: [
@@ -43,10 +44,10 @@ function App() {
 		},
 	]);
 	const [currentChat, setCurrentChat] = useState(onlineUsers[0]);
-	const handleSetCurrentChat = user => {
+	const handleSetCurrentChat = (user:User) => {
 		setCurrentChat(user);
 	};
-	const handleSetTitle = title => {
+	const handleSetTitle = (title:string | JSX.Element) => {
 		setAppbarTitle(title);
 	};
 	return (

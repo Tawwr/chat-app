@@ -1,19 +1,21 @@
 import {
-	ListItem,
+	Avatar, Badge,
+	Divider,
+	Grid, ListItem,
 	ListItemAvatar,
-	ListItemText,
-	Avatar,
-	Typography,
-	Badge,
-    Divider,
-    Grid
+	ListItemText, Typography
 } from '@mui/material';
-
-import { useState } from 'react'
+import moment from 'moment';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment'
+import { User } from '../types';
 
-const Conversation = ({user, setCurrentChat}) => {
+
+type ConversationProps = {
+	user: User
+	setCurrentChat: (user: User) => void
+}
+const Conversation = ({user, setCurrentChat}:ConversationProps) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
 

@@ -1,9 +1,10 @@
-import { Box } from '@mui/material';
-import { Typography, Avatar, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import Logo from '../assets/logo.svg';
 
-const Appbar = ({ title }) => {
+type AppBarProps = {
+	title:string | JSX.Element
+}
+const Appbar = ({ title }:AppBarProps) => {
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
 	useEffect(() => {
@@ -31,7 +32,7 @@ const Appbar = ({ title }) => {
 			{screenWidth > 768 ? (
 				<Grid container >
 					<Grid item>
-						    <img src={Logo} alt='logo' width='30' />
+						    <img src={require("../assets/logo.svg")} alt='logo' width='30' />
                     </Grid>
                     <Grid item>
                         <Typography variant="h6" color="#fff">Connect</Typography>

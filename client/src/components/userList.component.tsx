@@ -1,7 +1,13 @@
 import {List} from '@mui/material'
 import Conversation from './conversation.component'
 import { useState } from 'react'
-const UserList = ({setCurrentChat, onlineUsers}) => {
+import { User } from '../types';
+
+type UserListProps = {
+	onlineUsers: User[];
+	setCurrentChat: (user: User) => void;
+}
+const UserList = ({setCurrentChat, onlineUsers}:UserListProps) => {
     
 	return (
 		<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
