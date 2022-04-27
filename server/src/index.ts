@@ -7,6 +7,7 @@ import http from 'http';
 import AppDataSource from './data-source';
 import { authRouter } from './routes/auth';
 import { Server } from 'socket.io';
+import path from 'path';
 dotenv.config();
 const app = express();
 
@@ -15,11 +16,15 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(json());
 app.use(urlencoded({ extended: false }));
-
-app.get('/', function (req, res) {
-  res.send('Server is running');
-});
 app.use('/auth', authRouter);
+
+
+app.use(express.static(path.join(__dirname, "../../client/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+});
+
 
 const server = http.createServer(app);
 const io = new Server(server, {

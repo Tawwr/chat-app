@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { LoginRequest, User, UserRequest } from '../types'
 
-export const URL = 'http://localhost:8181'
+// export const URL = 'http://localhost:8181'
+export const URL = window.location.origin.toString()
 
 const api = axios.create({
   baseURL: URL,

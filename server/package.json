@@ -2,9 +2,11 @@
     "name": "backend",
     "version": "1.0.0",
     "description": "",
+    "main": "./dist/index",
     "scripts": {
-      "start": "nodemon  ./src/index.ts",
-      "build": "npx tsc"
+      "build": "tsc --build",
+      "dev": "nodemon ./src/index.ts",
+      "start": "node ./dist/index.js"
     },
     "keywords": [],
     "author": "",
