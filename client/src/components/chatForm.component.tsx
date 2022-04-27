@@ -27,17 +27,10 @@ const ChatForm = () => {
         onBlur={formik.handleBlur}
         id="message"
         type="message"
-        variant="outlined"
-        color="success"
+        variant="outlined"  
         fullWidth
         sx={{
-          position: {
-            xs: 'fixed',
-            md: 'relative',
-          },
-          bottom: {
-            xs: '0',
-          },
+          width: '100%'
         }}
         InputProps={{
           endAdornment: (
