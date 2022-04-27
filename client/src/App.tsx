@@ -21,6 +21,19 @@ function App() {
       messages: [
         { body: 'Fine! see you..', createdAt: new Date() },
         { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam', createdAt: new Date() },
+        { body: 'I am Islam last', createdAt: new Date() },
       ],
       sameUser: true,
     },
@@ -48,6 +61,70 @@ function App() {
       ],
       sameUser: false,
     },
+    {
+      username: 'Wahed',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Wahed', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Noha',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Noha', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Ramy',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Ramy', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Nader',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Nader', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Amr',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Nader', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Nader',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Nader', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Nader',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Nader', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
+    {
+      username: 'Nader',
+      messages: [
+        { body: 'Fine! see you..', createdAt: new Date() },
+        { body: 'I am Nader', createdAt: new Date() },
+      ],
+      sameUser: false,
+    },
   ])
   const [currentChat, setCurrentChat] = useState<DummyUser>(onlineUsers[0])
 
@@ -64,7 +141,7 @@ function App() {
   }
   return (
     <SocketProvider>
-      <div className="App">
+      <div className="App" >
         <Appbar title={appbarTitle} />
         <Routes>
           <Route
@@ -90,7 +167,6 @@ function App() {
             }
           />
         </Routes>
-        <Footer />
       </div>
     </SocketProvider>
   )
