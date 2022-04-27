@@ -18,10 +18,6 @@ const Appbar = ({ title }: AppBarProps) => {
       component="div"
       sx={{
         background: '#373759',
-        height: {
-          xs: '28px',
-          md: '32px',
-        },
         position: 'sticky',
         top: '0',
         left: '0',
@@ -30,7 +26,7 @@ const Appbar = ({ title }: AppBarProps) => {
         zIndex: '1',
       }}
     >
-      {screenWidth > 768 ? (
+      {screenWidth > 992 ? (
         <Grid container>
           <Grid item>
             <img
