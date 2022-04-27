@@ -1,14 +1,16 @@
 import SendIcon from '@mui/icons-material/Send'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 import { useFormik } from 'formik'
+import { useSocket } from '../contexts/socketProvider'
 
 const ChatForm = () => {
+  const socket = useSocket()
   const formik = useFormik({
     initialValues: {
       message: '',
     },
     onSubmit: (values) => {
-      console.log(values)
+      socket.emit('send-message',values)
       formik.resetForm()
     },
   })

@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from './redux/store'
 import { useEffect } from 'react'
 import AuthGuard from './components/authGuard.component'
+import SocketProvider from './contexts/socketProvider'
 function App() {
   const token = useSelector((state: RootState) => state.app.token)
   const [appbarTitle, setAppbarTitle] = useState<string | JSX.Element>('')
@@ -62,34 +63,36 @@ function App() {
     setAppbarTitle(title)
   }
   return (
-    <div className="App">
-      <Appbar title={appbarTitle} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <AuthGuard>
-              <Home
-                setCurrentChat={handleSetCurrentChat}
-                currentChat={currentChat}
-                onlineUsers={onlineUsers}
-                setTitle={handleSetTitle}
-              />
-            </AuthGuard>
-          }
-        />
-        <Route path="/auth" element={<Auth setTitle={handleSetTitle} />} />
-        <Route
-          path="/chat"
-          element={
-            <AuthGuard>
-              <Chat currentChat={currentChat} setTitle={handleSetTitle} />
-            </AuthGuard>
-          }
-        />
-      </Routes>
-      <Footer />
-    </div>
+    <SocketProvider>
+      <div className="App">
+        <Appbar title={appbarTitle} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <AuthGuard>
+                <Home
+                  setCurrentChat={handleSetCurrentChat}
+                  currentChat={currentChat}
+                  onlineUsers={onlineUsers}
+                  setTitle={handleSetTitle}
+                />
+              </AuthGuard>
+            }
+          />
+          <Route path="/auth" element={<Auth setTitle={handleSetTitle} />} />
+          <Route
+            path="/chat"
+            element={
+              <AuthGuard>
+                <Chat currentChat={currentChat} setTitle={handleSetTitle} />
+              </AuthGuard>
+            }
+          />
+        </Routes>
+        <Footer />
+      </div>
+    </SocketProvider>
   )
 }
 

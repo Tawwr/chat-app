@@ -9,7 +9,6 @@ type AuthGuardType = {
   children: React.ReactNode
 }
 function AuthGuard({ children }: AuthGuardType) {
-
   const { token, user } = useSelector((state: RootState) => state.app)
 
   const dispatch = useDispatch()
