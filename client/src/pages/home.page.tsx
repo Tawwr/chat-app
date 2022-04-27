@@ -26,56 +26,83 @@ const Home = ({
   }, [screenWidth])
 
   useEffect(() => {
-    if (screenWidth < 768) {
+    if (screenWidth < 992) {
       setTitle('Messages')
     }
   }, [])
 
   return (
-    <>
-      {screenWidth > 768 ? (
+    <div style={{ margin: '25px 0' }}>
+      {screenWidth > 992   ? (
         <Grid
           container
           justifyContent="center"
           // alignItems='center'
           spacing={3}
-          sx={{ minHeight: '100vh', width: '100%', margin: '50px 0 0' }}
+          sx={{ width: '100%' }}
         >
-          <Grid item xs={12} md={3} sx={{ height: '80vh', width: '100%' }}>
-            <Paper elevation={0} sx={{ height: '100%' }}>
+          <Grid item xs={12} md={3} sx={{ height: '75vh', width: '100%' }}>
+            <div
+              style={{
+                width: '100%',
+                background: '#fff',
+                borderRadius: '15px 15px 0 0',
+              }}
+            >
               <Typography
                 component="div"
                 color="#000"
                 variant="h6"
-                sx={{ marginLeft: '20px', fontWeight: '600' }}
+                sx={{
+                  marginLeft: '20px',
+                  fontWeight: '600',
+                  position: 'relative',
+                  top: '0',
+                  left: '0',
+                  padding: '15px',
+                }}
               >
                 Messages
               </Typography>
+            </div>
+            <div style={{width: "100%", height: '100%', overflowY: 'auto' }}>
               <UserList
                 setCurrentChat={setCurrentChat}
                 onlineUsers={onlineUsers}
               />
-            </Paper>
+            </div>
           </Grid>
-          <Grid item md={6} sx={{ height: '80vh', width: '100%' }}>
+          <Grid item sm={6} md={6} sx={{ height: '100%', width: '100%' }}>
             <Grid container spacing={2} sx={{ height: '80vh', width: '100%' }}>
-              <Grid item xs={12} sx={{ height: '100%', position: 'relative' }}>
+              <Grid item xs={12} sx={{ height: '100%' }}>
                 <div
                   style={{
-                    position: 'absolute',
-                    top: '18px',
                     background: '#fff',
-                    width: '90%',
+                    padding: '10px',
+                    borderRadius: '15px 15px 0 0',
                   }}
                 >
-                  <Avatar sx={{ display: 'inline-block' }} />
-                  <Typography component="span" variant="body1">
-                    {currentChat.username}
-                  </Typography>
+                  <Grid container alignItems="center">
+                    <Grid item sx={{marginRight: "10px"}}>
+                      <Avatar sx={{ display: 'inline-block' }} />
+                    </Grid>
+                    <Grid item>
+                      <Typography component="span" variant="body1">
+                        {currentChat.username}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </div>
-                <Paper elevation={0} sx={{ height: '100%', overflowY: 'auto' }}>
+                <div
+                  style={{
+                    height: '70vh',
+                    overflowY: 'auto',
+                    background: '#fff',
+                    borderRadius: '0 0 15px 15px',
+                  }}
+                >
                   <MessagesContainer currentChat={currentChat} />
-                </Paper>
+                </div>
               </Grid>
               <Grid item xs={12} sx={{ height: '20%' }}>
                 <ChatForm />
@@ -84,19 +111,16 @@ const Home = ({
           </Grid>
         </Grid>
       ) : (
-        <div style={{ minHeight: '100vh', margin: '50px 0 0' }}>
-          <Typography
-            component="div"
-            color="#000"
-            variant="h6"
-            sx={{ marginLeft: '20px', fontWeight: '600' }}
-          >
-            Messages
-          </Typography>
-          <UserList setCurrentChat={setCurrentChat} onlineUsers={onlineUsers} />
-        </div>
+        <Grid item xs={12} md={3} sx={{ height: '75vh', width: '100%' }}>
+          <div style={{ height: '100%', overflowY: 'auto' }}>
+            <UserList
+              setCurrentChat={setCurrentChat}
+              onlineUsers={onlineUsers}
+            />
+          </div>
+        </Grid>
       )}
-    </>
+    </div>
   )
 }
 
