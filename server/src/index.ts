@@ -1,14 +1,12 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express, { json, urlencoded } from 'express';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import http from 'http';
+import morgan from 'morgan';
+import path from 'path';
+import { Server } from 'socket.io';
 import AppDataSource from './data-source';
 import { authRouter } from './routes/auth';
-import { Server } from 'socket.io';
-import path from 'path';
-dotenv.config();
 const app = express();
 
 app.use(cors());
