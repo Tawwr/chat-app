@@ -17,7 +17,7 @@ function AuthGuard({ children }: AuthGuardType) {
   const fetchMe = async () => {
     try {
       setIsLoading(true)
-      const data = await meAPI(token)
+      const data = await meAPI()
       dispatch(setUser(data))
     } catch (error) {
       dispatch(signOut())

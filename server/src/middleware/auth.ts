@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { getUserByEmail } from '../utils'
 
 export const isAuthenticated = (req, res, next) => {
   try {
@@ -8,7 +9,7 @@ export const isAuthenticated = (req, res, next) => {
         message: 'No token provided',
       })
     }
-    jwt.verify(token, process.env.HASHING_KEY, (err, token) => {
+    jwt.verify(token, process.env.HASHING_KEY, async (err, token) => {
       if (err) {
         return res.status(401).json({
           message: 'Invalid token',
@@ -21,6 +22,12 @@ export const isAuthenticated = (req, res, next) => {
         })
       }
 
+      const user = await getUserByEmail(token.email)
+      if (!user) {
+        return res.status(404).json({
+          message: 'User not found',
+        });
+      }
       req.email = token.email
       next()
     })

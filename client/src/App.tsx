@@ -12,6 +12,7 @@ import { RootState } from './redux/store'
 import { useEffect } from 'react'
 import AuthGuard from './components/authGuard.component'
 import SocketProvider from './contexts/socketProvider'
+import { LOCAL_STORAGE_TOKEN_NAME } from './constants'
 function App() {
   const token = useSelector((state: RootState) => state.app.token)
   const [appbarTitle, setAppbarTitle] = useState<string | JSX.Element>('')
@@ -52,7 +53,7 @@ function App() {
   const [currentChat, setCurrentChat] = useState<DummyUser>(onlineUsers[0])
 
   useEffect(() => {
-    localStorage.setItem('chat-auth-token', token)
+    localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, token)
   }, [token])
 
   const handleSetCurrentChat = (user: DummyUser) => {

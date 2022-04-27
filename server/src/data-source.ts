@@ -1,7 +1,10 @@
 import { config } from 'dotenv'
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { User } from './entities/user'
+import { Conversation } from './entities/Conversation'
+import { EntityBase } from './entities/EntityBase'
+import { Message } from './entities/Message'
+import { User } from './entities/User'
 config()
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -12,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [User,Message,Conversation, EntityBase],
   migrations: ['migration/*.ts'],
   subscribers: [],
 })

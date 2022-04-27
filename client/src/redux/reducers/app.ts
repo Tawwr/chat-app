@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { AppStateType, User } from '../../types'
+import { localStorageToken } from '../../constants'
+import { AppStateType, AuthUser } from '../../types'
 
 const initialState: AppStateType = {
   user: null,
-  token: localStorage.getItem('chat-auth-token') || '',
+  token: localStorage.getItem(localStorageToken) || '',
 }
 
 export const appSlice = createSlice({
@@ -13,7 +14,7 @@ export const appSlice = createSlice({
     setToken(state, { payload }: { payload: string }) {
       state.token = payload
     },
-    setUser: (state, { payload }: { payload: User }) => {
+    setUser: (state, { payload }: { payload: AuthUser }) => {
       state.user = payload
     },
     signOut: (state) => {

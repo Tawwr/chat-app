@@ -1,23 +1,17 @@
 import bcrypt from 'bcryptjs';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { Raw } from 'typeorm';
-import { User } from '../entities/user';
+import { User } from '../entities/User';
 import { isAuthenticated } from '../middleware/auth';
 import { AuthenticatedRequest } from '../types';
+import { getUserByEmail } from '../utils';
 
 const router = express.Router();
 
 router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
   try {
     const token = req.headers.authorization;
-    const user = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-            value: `%${req.email}%`,
-        }),
-      },
-    });
+    const user = await getUserByEmail(req.email)
     if (!user) {
       return res.status(404).json({
         message: 'User not found',
@@ -36,13 +30,7 @@ router.post('/login', async (req, res) => {
 
   try {
     // Check if user already exists
-    const user = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-          value: `%${email}%`,
-        }),
-      },
-    });
+    const user = await getUserByEmail(email)
 
     if (!user) {
       return res.status(400).json({
@@ -76,15 +64,7 @@ router.post('/signup', async (req, res) => {
 
   try {
     // Check if user already exists
-
-
-    const userExists = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-          value: `%${email}%`,
-        }),
-      },
-    });
+    const userExists = await getUserByEmail(email)
 
     if (userExists) {
       return res.status(400).json({
