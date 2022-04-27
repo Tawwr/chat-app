@@ -1,25 +1,40 @@
-import { Grid, TextField, Button, Typography, Paper } from '@mui/material'
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import { signUpAPI } from '../api'
+import { setToken, setUser } from '../redux/reducers/app'
 
 type SignupProps = {
   toggleAuth: () => void
 }
 
 const Signup = ({ toggleAuth }: SignupProps) => {
+  const [error, setError] = useState<string>('')
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       username: '',
       email: '',
       password: '',
+      firstName: '',
+      lastName: '',
     },
     validationSchema: Yup.object({
       username: Yup.string().required('Required'),
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      try {
+        setError('')
+        const data = await signUpAPI(values)
+        dispatch(setUser(data))
+        dispatch(setToken(data.token))
+      } catch (error: any) {
+        setError(error.response.data.error)
+      }
     },
   })
 
@@ -109,6 +124,40 @@ const Signup = ({ toggleAuth }: SignupProps) => {
                 />
                 <TextField
                   error={
+                    Boolean(formik.errors.firstName) &&
+                    Boolean(formik.touched.firstName)
+                  }
+                  helperText={formik.errors.firstName}
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  label="First Name"
+                  type="text"
+                  variant="standard"
+                  color="success"
+                  fullWidth
+                  sx={{ marginBottom: '20px' }}
+                />
+                <TextField
+                  error={
+                    Boolean(formik.errors.lastName) &&
+                    Boolean(formik.touched.lastName)
+                  }
+                  helperText={formik.errors.lastName}
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  label="Last Name"
+                  type="text"
+                  variant="standard"
+                  color="success"
+                  fullWidth
+                  sx={{ marginBottom: '20px' }}
+                />
+                <TextField
+                  error={
                     Boolean(formik.errors.email) &&
                     Boolean(formik.touched.email)
                   }
@@ -144,6 +193,12 @@ const Signup = ({ toggleAuth }: SignupProps) => {
                   fullWidth
                   sx={{ marginBottom: '20px' }}
                 />
+
+                {error && (
+                  <Typography variant="body2" color="error">
+                    {error}
+                  </Typography>
+                )}
 
                 <Button
                   className="form-btn"

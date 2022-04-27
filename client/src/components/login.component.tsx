@@ -1,11 +1,18 @@
-import { Grid, TextField, Button, Typography, Paper } from '@mui/material'
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import { signInAPI } from '../api'
+import { setToken, setUser } from '../redux/reducers/app'
 
 type LoginProps = {
   toggleAuth: () => void
 }
 const Login = ({ toggleAuth }: LoginProps) => {
+
+  const [error, setError] = useState<string>('')
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -15,8 +22,15 @@ const Login = ({ toggleAuth }: LoginProps) => {
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      try {
+        setError('')
+        const data = await signInAPI(values)
+        dispatch(setUser(data))
+        dispatch(setToken(data.token))
+      } catch (error: any) {
+        setError(error.response.data.error)
+      }
     },
   })
 
@@ -126,6 +140,11 @@ const Login = ({ toggleAuth }: LoginProps) => {
                   sx={{ marginBottom: '20px' }}
                 />
 
+                {error && (
+                  <Typography variant="body2" color="error">
+                    {error}
+                  </Typography>
+                )}
                 <Button
                   className="form-btn"
                   variant="contained"
