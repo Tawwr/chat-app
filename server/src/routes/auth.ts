@@ -5,19 +5,14 @@ import { Raw } from 'typeorm';
 import { User } from '../entities/user';
 import { isAuthenticated } from '../middleware/auth';
 import { AuthenticatedRequest } from '../types';
+import { findUserByEmail } from '../utils';
 
 const router = express.Router();
 
 router.get('/me', isAuthenticated, async (req: AuthenticatedRequest, res) => {
   try {
     const token = req.headers.authorization;
-    const user = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-            value: `%${req.email}%`,
-        }),
-      },
-    });
+    const user = await findUserByEmail(req.email);
     if (!user) {
       return res.status(404).json({
         message: 'User not found',
@@ -36,13 +31,7 @@ router.post('/login', async (req, res) => {
 
   try {
     // Check if user already exists
-    const user = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-          value: `%${email}%`,
-        }),
-      },
-    });
+    const user = await findUserByEmail(email);
 
     if (!user) {
       return res.status(400).json({
@@ -78,13 +67,7 @@ router.post('/signup', async (req, res) => {
     // Check if user already exists
 
 
-    const userExists = await User.findOne({
-      where: {
-        email: Raw((alias) => `LOWER(${alias}) Like LOWER(:value)`, {
-          value: `%${email}%`,
-        }),
-      },
-    });
+    const userExists = await findUserByEmail(email);
 
     if (userExists) {
       return res.status(400).json({

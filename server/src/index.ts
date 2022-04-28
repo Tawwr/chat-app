@@ -7,6 +7,8 @@ import http from 'http';
 import AppDataSource from './data-source';
 import { authRouter } from './routes/auth';
 import { Server } from 'socket.io';
+import { conversationRouter } from './routes/conversation';
+import { userRouter } from './routes/user';
 dotenv.config();
 const app = express();
 
@@ -20,6 +22,8 @@ app.get('/', function (req, res) {
   res.send('Server is running');
 });
 app.use('/auth', authRouter);
+app.use('/conversation', conversationRouter);
+app.use('/user', userRouter);
 
 const server = http.createServer(app);
 const io = new Server(server, {

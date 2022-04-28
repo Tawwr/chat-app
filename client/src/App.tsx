@@ -1,17 +1,17 @@
-import './App.css'
-import { Routes, Route } from 'react-router-dom'
-import Home from './pages/home.page'
-import Chat from './pages/chat.page'
-import Auth from './pages/auth.page'
-import Appbar from './components/appbar.component'
-import Footer from './components/footer.component'
-import { useState } from 'react'
-import { DummyUser } from './types'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from './redux/store'
-import { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import Appbar from './components/appbar.component'
 import AuthGuard from './components/authGuard.component'
+import Footer from './components/footer.component'
+import { CHAT_AUTH_TOKEN_NAME } from './constants'
 import SocketProvider from './contexts/socketProvider'
+import Auth from './pages/auth.page'
+import Chat from './pages/chat.page'
+import Home from './pages/home.page'
+import { RootState } from './redux/store'
+import { DummyUser } from './types'
 function App() {
   const token = useSelector((state: RootState) => state.app.token)
   const [appbarTitle, setAppbarTitle] = useState<string | JSX.Element>('')
@@ -52,7 +52,7 @@ function App() {
   const [currentChat, setCurrentChat] = useState<DummyUser>(onlineUsers[0])
 
   useEffect(() => {
-    localStorage.setItem('chat-auth-token', token)
+    localStorage.setItem(CHAT_AUTH_TOKEN_NAME, token)
   }, [token])
 
   const handleSetCurrentChat = (user: DummyUser) => {

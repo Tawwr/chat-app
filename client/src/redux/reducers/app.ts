@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { localStorageToken } from '../../constants'
 import { AppStateType, User } from '../../types'
 
 const initialState: AppStateType = {
   user: null,
-  token: localStorage.getItem('chat-auth-token') || '',
+  token: localStorageToken(),
 }
 
 export const appSlice = createSlice({

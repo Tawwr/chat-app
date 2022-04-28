@@ -27,7 +27,7 @@ const Login = ({ toggleAuth }: LoginProps) => {
         setError('')
         const data = await signInAPI(values)
         dispatch(setUser(data))
-        dispatch(setToken(data.token))
+        dispatch(setToken(data.token!))
       } catch (error: any) {
         setError(error.response.data.error)
       }

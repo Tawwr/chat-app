@@ -31,7 +31,7 @@ const Signup = ({ toggleAuth }: SignupProps) => {
         setError('')
         const data = await signUpAPI(values)
         dispatch(setUser(data))
-        dispatch(setToken(data.token))
+        dispatch(setToken(data.token!))
       } catch (error: any) {
         setError(error.response.data.error)
       }

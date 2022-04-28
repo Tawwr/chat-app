@@ -1,6 +1,8 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import { AuthenticatedRequest } from '../types'
+import { findUserByEmail } from '../utils'
 
-export const isAuthenticated = (req, res, next) => {
+export const isAuthenticated = (req:AuthenticatedRequest, res, next) => {
   try {
     const token = req.headers.authorization
     if (!token) {
@@ -8,7 +10,7 @@ export const isAuthenticated = (req, res, next) => {
         message: 'No token provided',
       })
     }
-    jwt.verify(token, process.env.HASHING_KEY, (err, token) => {
+    jwt.verify(token, process.env.HASHING_KEY, async(err, token:JwtPayload) => {
       if (err) {
         return res.status(401).json({
           message: 'Invalid token',
@@ -18,6 +20,15 @@ export const isAuthenticated = (req, res, next) => {
       if (token.exp < Date.now() / 1000) {
         return res.status(401).json({
           message: 'Token expired',
+        })
+      }
+
+      // search for user in db
+      const userExists = await findUserByEmail(token.email)
+
+      if (!userExists) {
+        return res.status(404).json({
+          message: 'User not found',
         })
       }
 
