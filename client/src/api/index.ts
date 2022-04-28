@@ -78,7 +78,7 @@ export const sendMessageAPI = async ({id, body}:{ id:number, body: string}): Pro
 }
 
 export const getConversationByIdAPI = async (id:number): Promise<Conversation> => {
-  const response = await api.get(`/conversations/${id}`, {
+  const response = await api.get(`/conversation/${id}`, {
     headers: {
       Authorization: localStorageToken(),
     },

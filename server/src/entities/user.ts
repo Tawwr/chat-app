@@ -1,31 +1,39 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { Conversation } from './conversation'
-import { CustomEntityBase } from './entityBase'
-import { Message } from './message'
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Conversation } from "./conversation";
+import { CustomEntityBase } from "./entityBase";
+import { Message } from "./message";
 @Entity()
 export class User extends CustomEntityBase {
   @Column()
-  firstName: string
+  firstName: string;
 
   @Column()
-  lastName: string
+  lastName: string;
 
   @Column()
-  email: string
+  email: string;
 
   @Column()
-  password: string
+  password: string;
 
   @Column()
-  username: string
+  username: string;
 
-  @Column({nullable:true})
-  imageURL: string
+  @Column({ nullable: true })
+  imageURL: string;
 
   @OneToMany(() => Message, (message) => message.sender)
-  messages: Message[]
+  messages: Message[];
 
-  @ManyToMany(()=> Conversation, (conversation) => conversation.users)
+  @ManyToMany(() => Conversation, (conversation) => conversation.users)
   @JoinTable()
-  conversations:Conversation[]
+  conversations: Conversation[];
 }

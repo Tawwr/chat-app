@@ -32,7 +32,7 @@ function AuthGuard({ children }: AuthGuardType) {
   if (isLoading) return <div>Loading...</div>
 
   if (user) return <>{children}</>
-  else return <Navigate to="/auth" replace />
+  else return <Navigate to="/login" replace />
 }
 
 export default AuthGuard

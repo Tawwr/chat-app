@@ -1,15 +1,15 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { CustomEntityBase } from './entityBase'
-import { Message } from './message'
-import { User } from './user'
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from "typeorm";
+import { CustomEntityBase } from "./entityBase";
+import { Message } from "./message";
+import { User } from "./user";
 @Entity()
 export class Conversation extends CustomEntityBase {
   @Column()
-  name: string
+  name: string;
 
   @OneToMany(() => Message, (message) => message.conversation)
-  messages: Message[]
+  messages: Message[];
 
-  @ManyToMany(()=> User, (user) => user.conversations)
-  users:User[]
+  @ManyToMany(() => User, (user) => user.conversations)
+  users: User[];
 }

@@ -25,7 +25,8 @@ const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
   const handleClick = () => {
     setCurrentChat(user)
     console.log(user)
-    screenWidth < 768 && navigate('/chat')
+    //TODO: disoatch conversation.id
+    screenWidth < 768 && navigate('/conversation/1')
   }
   return (
     <>

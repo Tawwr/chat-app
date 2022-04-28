@@ -20,6 +20,12 @@ export type DummyMessage = {
 export type AppStateType = {
   token: string
   user: User | null
+  conversationView: 'chat' | 'messages'
+}
+
+export type ConversationStateType = {
+  conversations: Conversation[]
+  selectedConversation: Conversation | null
 }
 
 //-----------------------------------------------------------------------------
@@ -72,3 +78,11 @@ export type LoginRequest = {
   email: string
   password: string
 }
+
+
+
+
+//-----------------------------------------------------------------------------
+// MISC TYPES
+//-----------------------------------------------------------------------------
+export type ConversationViewType = 'chat' | 'messages'
