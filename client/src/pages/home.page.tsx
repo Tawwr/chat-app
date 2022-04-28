@@ -1,4 +1,4 @@
-import { Avatar, Grid, Paper, Typography } from '@mui/material'
+import { Avatar, Grid, Typography, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import ChatForm from '../components/chatForm.component'
 import MessagesContainer from '../components/messagesContainer.component'
@@ -33,7 +33,7 @@ const Home = ({
 
   return (
     <div style={{ margin: '25px 0' }}>
-      {screenWidth > 992   ? (
+      {screenWidth > 992 ? (
         <Grid
           container
           justifyContent="center"
@@ -64,8 +64,23 @@ const Home = ({
               >
                 Messages
               </Typography>
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={2}
+                sx={{ overflowX: 'auto', padding: '10px' }}
+              >
+                <Avatar src="user-img.png" alt="Mahmoud" />
+                <Avatar src="user-img.png" alt="Islam" />
+                <Avatar src="user-img.png" alt="Ahmed" />
+                <Avatar src="user-img.png" alt="Sherif" />
+                <Avatar src="user-img.png" alt="Ali" />
+                <Avatar  />
+                <Avatar src="user-img.png" alt="Ali" />
+                <Avatar />
+              </Stack>
             </div>
-            <div style={{width: "100%", height: '100%', overflowY: 'auto' }}>
+            <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
               <UserList
                 setCurrentChat={setCurrentChat}
                 onlineUsers={onlineUsers}
@@ -83,8 +98,8 @@ const Home = ({
                   }}
                 >
                   <Grid container alignItems="center">
-                    <Grid item sx={{marginRight: "10px"}}>
-                      <Avatar sx={{ display: 'inline-block' }} />
+                    <Grid item sx={{ marginRight: '10px' }}>
+                      <Avatar />
                     </Grid>
                     <Grid item>
                       <Typography component="span" variant="body1">
