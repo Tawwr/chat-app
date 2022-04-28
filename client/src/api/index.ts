@@ -1,15 +1,19 @@
 import axios from 'axios'
 import { BASE_URL, localStorageToken } from '../constants'
 import {
-  AuthUser, Conversation,
-  LoginRequest, User, UserRequest
+  AuthUser,
+  Conversation,
+  LoginRequest,
+  User,
+  UserRequest,
 } from '../types'
 
 const api = axios.create({
   baseURL: BASE_URL,
+  headers: {
+    Authorization: localStorageToken(),
+  },
 })
-
-api.defaults.headers.common['Authorization'] = localStorageToken
 
 // AUTH
 
@@ -24,18 +28,24 @@ export const signInAPI = async (user: LoginRequest): Promise<AuthUser> => {
 }
 
 export const meAPI = async (): Promise<AuthUser> => {
-  const response = await api.get('/auth/me')
+  const response = await api.get('/auth/me', {
+    headers: { Authorization: localStorageToken() },
+  })
   return response.data
 }
 
 // User
 export const usersAPI = async (): Promise<User[]> => {
-  const response = await api.get('/user/users')
+  const response = await api.get('/user/users', {
+    headers: { Authorization: localStorageToken() },
+  })
   return response.data
 }
 
 export const userConversationsAPI = async (): Promise<Conversation[]> => {
-  const response = await api.get('/user/users')
+  const response = await api.get('/user/users', {
+    headers: { Authorization: localStorageToken() },
+  })
   return response.data
 }
 
@@ -45,14 +55,18 @@ export const createConversationAPI = async (conversation: {
   userIds: string[]
   name?: string
 }): Promise<Conversation> => {
-  const response = await api.post('/conversation', conversation)
+  const response = await api.post('/conversation', conversation, {
+    headers: { Authorization: localStorageToken() },
+  })
   return response.data
 }
 
 export const getConversationByIdAPI = async (
   id: string
 ): Promise<Conversation> => {
-  const response = await api.get(`/${id}`)
+  const response = await api.get(`/${id}`, {
+    headers: { Authorization: localStorageToken() },
+  })
   return response.data
 }
 
@@ -63,6 +77,12 @@ export const sendMessageAPI = async ({
   conversation: Conversation
   body: string
 }): Promise<Conversation> => {
-  const response = await api.post(`/${conversation.id}`, { body })
+  const response = await api.post(
+    `/${conversation.id}`,
+    { body },
+    {
+      headers: { Authorization: localStorageToken() },
+    }
+  )
   return response.data
 }

@@ -4,7 +4,7 @@ import { AppStateType, AuthUser } from '../../types'
 
 const initialState: AppStateType = {
   user: null,
-  token: localStorage.getItem(localStorageToken) || '',
+  token: localStorageToken(),
 }
 
 export const appSlice = createSlice({
