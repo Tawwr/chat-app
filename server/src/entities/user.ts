@@ -1,16 +1,14 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinTable,
   ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
+  OneToMany
 } from "typeorm";
 import { Conversation } from "./conversation";
 import { CustomEntityBase } from "./entityBase";
 import { Message } from "./message";
-@Entity()
+@Entity("ChatAppUser")
 export class User extends CustomEntityBase {
   @Column()
   firstName: string;

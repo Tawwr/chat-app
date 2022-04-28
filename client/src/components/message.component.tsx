@@ -1,21 +1,27 @@
 import { Grid, Typography } from '@mui/material'
-import { DummyMessage , DummyUser } from '../types'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import { Message as MessageType } from '../types'
 
 type MessageProps = {
   mobile: boolean
-  user: DummyUser
-  message: DummyMessage
+  message: MessageType
 }
-const Message = ({ mobile, user, message }: MessageProps) => {
+const Message = ({ mobile, message }: MessageProps) => {
+  const { sender } = message
+  const user = useSelector((state: RootState) => state.app.user)
+
+  const isSender = sender.id === user?.id
+
   return (
     <Grid
       item
       sx={{
-        alignSelf: user.sameUser ? 'flex-end' : 'flex-start',
+        alignSelf: isSender ? 'flex-end' : 'flex-start',
         width: mobile ? '60%' : '40%',
         minHeight: '20px',
-        borderRadius: user.sameUser ? '10px 10px 0 10px' : '10px 10px 10px 0',
-        background: user.sameUser ? '#6C89F4' : '#03ccbb',
+        borderRadius: isSender ? '10px 10px 0 10px' : '10px 10px 10px 0',
+        background: isSender ? '#6C89F4' : '#03ccbb',
         padding: '10px',
         margin: '5px 0',
       }}

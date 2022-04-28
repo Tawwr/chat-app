@@ -31,6 +31,16 @@ export const conversationSlice = createSlice({
       )
       if (conversation) {
         conversation.messages.push(payload)
+
+        const selectedConversation = state.selectedConversation
+        if (
+          selectedConversation &&
+          selectedConversation.id === conversation.id
+        ) {
+          state.selectedConversation = conversation
+        }
+      } else {
+        state.conversations.push(payload.conversation)
       }
     },
   },

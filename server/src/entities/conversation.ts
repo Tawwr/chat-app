@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { CustomEntityBase } from "./entityBase";
 import { Message } from "./message";
 import { User } from "./user";
-@Entity()
+@Entity("ChatAppConversation")
 export class Conversation extends CustomEntityBase {
   @Column()
   name: string;

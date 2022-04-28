@@ -3,7 +3,7 @@ import { Conversation } from "./conversation";
 import { CustomEntityBase } from "./entityBase";
 import { User } from "./user";
 
-@Entity()
+@Entity("ChatAppMessage")
 export class Message extends CustomEntityBase {
   @Column()
   body: string;

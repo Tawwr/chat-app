@@ -4,7 +4,7 @@ import conversationSlice from './reducers/conversation'
 const store = configureStore({
   reducer: {
     app: appReducer,
-    conversation: conversationSlice
+    conversationsState: conversationSlice
   },
 })
 

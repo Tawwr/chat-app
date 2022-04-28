@@ -1,19 +1,42 @@
 import SendIcon from '@mui/icons-material/Send'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 import { useFormik } from 'formik'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { sendMessageAPI } from '../api'
 import { useSocket } from '../contexts/socketProvider'
+import { RootState } from '../redux/store'
 
 const ChatForm = () => {
+  const conversation = useSelector(
+    (state: RootState) => state.conversationsState.selectedConversation
+  )
+  const [locked, setLocked] = useState(false)
+
   const socket = useSocket()
   const formik = useFormik({
     initialValues: {
       message: '',
     },
-    onSubmit: (values) => {
-      socket.emit('send-message',values)
-      formik.resetForm()
+    onSubmit: async (values) => {
+      if (!locked) {
+        try {
+          setLocked(true)
+          const message = await sendMessageAPI({
+            id: conversation!.id,
+            body: values.message,
+          })
+          socket.emit('send-message',message)
+          formik.resetForm()
+        } catch (error) {
+          console.log({error})
+        } finally {
+          setLocked(false)
+        }
+      }
     },
   })
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <TextField
@@ -45,7 +68,7 @@ const ChatForm = () => {
               <IconButton
                 disableRipple
                 type="submit"
-                disabled={!formik.values.message}
+                disabled={!formik.values.message && locked}
               >
                 <SendIcon sx={{ color: '#6C89F4' }} />
               </IconButton>

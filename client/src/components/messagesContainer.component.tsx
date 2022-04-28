@@ -1,22 +1,24 @@
 import { Grid } from '@mui/material'
-import { DummyUser } from '../types'
+import { RootState } from '../redux/store'
 import Message from './message.component'
+import { useSelector } from 'react-redux'
 
-type MessageContainerProps = {
-  currentChat: DummyUser
-}
-const MessagesContainer = ({ currentChat }: MessageContainerProps) => {
+const MessagesContainer = () => {
+  const conversation = useSelector(
+    (state: RootState) => state.conversationsState.selectedConversation
+  )
+
+  if (!conversation) return <div> No Conversation Found</div>
   return (
     <Grid
       container
       direction="column"
       /* alignItems="flex-end" */ sx={{ padding: '0 30px', width: '100%' }}
     >
-      {currentChat.messages.map((message, idx) => (
+      {conversation.messages.map((message) => (
         <Message
-          key={idx}
+          key={message.id}
           message={message}
-          user={currentChat}
           mobile={false}
         />
       ))}

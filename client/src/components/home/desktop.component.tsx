@@ -1,39 +1,15 @@
-import { Avatar, Grid, Paper, Typography } from '@mui/material'
+import { Avatar, Grid, List, Paper, Typography } from '@mui/material'
 import React from 'react'
 import ChatForm from '../chatForm.component'
 import MessagesContainer from '../messagesContainer.component'
-import UserList from '../userList.component'
-
-//TODO: Remove Dummy data
-const currentChat = {
-  username: 'Islam',
-  messages: [
-    { body: 'Fine! see you..', createdAt: new Date() },
-    { body: 'I am Islam', createdAt: new Date() },
-  ],
-  sameUser: true,
-}
-
-const onlineUsers = [
-  {
-    username: 'Islam',
-    messages: [
-      { body: 'Fine! see you..', createdAt: new Date() },
-      { body: 'I am Islam', createdAt: new Date() },
-    ],
-    sameUser: true,
-  },
-  {
-    username: 'Islam 2',
-    messages: [
-      { body: 'Fine! see you..', createdAt: new Date() },
-      { body: 'I am Islam', createdAt: new Date() },
-    ],
-    sameUser: true,
-  },
-]
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import Conversation from '../conversation.component'
 
 function DesktopComponent() {
+  const { conversations, selectedConversation } = useSelector(
+    (state: RootState) => state.conversationsState
+  )
   return (
     <Grid
       container
@@ -52,10 +28,13 @@ function DesktopComponent() {
           >
             Messages
           </Typography>
-          <UserList
-            setCurrentChat={(currentChat) => {}}
-            onlineUsers={onlineUsers}
-          />
+          <List
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          >
+            {conversations?.map((conversation) => (
+              <Conversation key={conversation.id} conversation={conversation} />
+            ))}
+          </List>
         </Paper>
       </Grid>
       <Grid item md={6} sx={{ height: '80vh', width: '100%' }}>
@@ -71,11 +50,11 @@ function DesktopComponent() {
             >
               <Avatar sx={{ display: 'inline-block' }} />
               <Typography component="span" variant="body1">
-                {currentChat.username}
+                {selectedConversation && selectedConversation.name}
               </Typography>
             </div>
             <Paper elevation={0} sx={{ height: '100%', overflowY: 'auto' }}>
-              <MessagesContainer currentChat={currentChat} />
+              <MessagesContainer />
             </Paper>
           </Grid>
           <Grid item xs={12} sx={{ height: '20%' }}>
