@@ -71,19 +71,28 @@ const Signup = ({ toggleAuth }: SignupProps) => {
           }}
         >
           <Grid item>
-            <img src={require('../assets/logo.svg').default} alt="logo" />
+            <img
+              src={require('../assets/logo.svg').default}
+              alt="logo"
+              width="180"
+            />
             <Typography align="center" variant="h4" color="#fff">
               Welcome Back!
             </Typography>
           </Grid>
         </Grid>
       </Grid>
-      <Grid item md={3} sx={{ height: '100%' }}>
+      <Grid item md={4} sx={{ height: '100%' }}>
         <Paper
+          elevation={0}
           sx={{
             height: '100%',
-            padding: '0 30px',
+            padding: '0 45px',
             borderRadius: '0 35px  35px 0',
+            background: {
+              xs: '#f4f5fb',
+              md: '#fff',
+            },
           }}
         >
           <Grid
@@ -93,17 +102,6 @@ const Signup = ({ toggleAuth }: SignupProps) => {
             sx={{ height: '100%' }}
           >
             <form onSubmit={formik.handleSubmit}>
-              <Grid
-                item
-                sx={{
-                  display: {
-                    xs: 'block',
-                    md: 'none',
-                  },
-                }}
-              >
-                <img src={require('../assets/logo.svg').default} alt="logo" />
-              </Grid>
               <Grid item>
                 <TextField
                   error={

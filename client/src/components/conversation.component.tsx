@@ -25,7 +25,7 @@ const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
   const handleClick = () => {
     setCurrentChat(user)
     console.log(user)
-    screenWidth < 768 && navigate('/chat')
+    screenWidth < 992 && navigate('/chat')
   }
   return (
     <>
@@ -34,6 +34,7 @@ const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
         sx={{
           borderLeft: '10px solid #6C89F4',
           '&:hover': { cursor: 'pointer', background: '#f4f5fb' },
+          
         }}
         onClick={handleClick}
       >

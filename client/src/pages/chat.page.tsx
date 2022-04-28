@@ -23,9 +23,10 @@ const Chat = ({ currentChat, setTitle }: ChatProps) => {
     )
   }, [])
   return (
-    <div style={{ height: '100vh', width: '100%', margin: '100px 0 0' }}>
-      <MessagesContainer currentChat={currentChat} />
-
+    <div style={{ width: '100%' }}>
+      <div style={{height: '80vh'}}>
+        <MessagesContainer currentChat={currentChat} />
+      </div>
       <ChatForm />
     </div>
   )

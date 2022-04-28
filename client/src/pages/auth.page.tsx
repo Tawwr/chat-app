@@ -23,9 +23,7 @@ const Auth = ({ setTitle }: AuthProps) => {
   return (
     <div
       style={{
-        minHeight: '100vh',
         width: '100%',
-        margin: '100px 0 0 0',
         display: 'flex',
         justifyContent: 'center',
         background: '#f4f5fb',
