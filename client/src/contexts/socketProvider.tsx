@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { connect, Socket } from 'socket.io-client'
-import { URL } from '../api'
+import { BASE_URL } from '../constants'
+import { addMessage } from '../redux/reducers/conversation'
 import { RootState } from '../redux/store'
+import { Message } from '../types'
 
 const SocketContext = createContext<Socket | null>(null)
 
@@ -19,20 +21,21 @@ type SocketProviderProps = {
   children: React.ReactNode
 }
 function SocketProvider({ children }: SocketProviderProps) {
+  const dispatch = useDispatch()
   const [socket, setSocket] = useState<Socket>(
-    connect(URL, { autoConnect: false })
+    connect(BASE_URL, { autoConnect: false })
   )
   const user = useSelector((state: RootState) => state.app.user)
 
   useEffect(() => {
     if (user) {
-      const newSocket = connect(URL, {
+      const newSocket = connect(BASE_URL, {
         query: { id: user.id },
       })
 
-      socket.on('update-ui', (payload) => {
+      socket.on('update-ui', (message:Message) => {
         console.log('received payload')
-        console.log({ payload })
+        dispatch(addMessage(message))
       })
 
       setSocket(newSocket)

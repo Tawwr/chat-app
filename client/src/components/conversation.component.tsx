@@ -9,24 +9,36 @@ import {
   Typography,
 } from '@mui/material'
 import moment from 'moment'
-import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { DummyUser } from '../types'
+import { setConversationView } from '../redux/reducers/app'
+import { Conversation as ConversationType } from '../types'
 
 type ConversationProps = {
-  setCurrentChat: (user: DummyUser) => void
-  user: DummyUser
+  conversation: ConversationType
 }
 
-const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+const Conversation = ({ conversation }: ConversationProps) => {
+  const { messages, name } = conversation
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  let lastMessageText = ''
+
+  let lastMessageSentAt = ''
+
+  if (messages.length > 0) {
+    const lastMessage = messages[messages.length - 1]
+
+    lastMessageText = lastMessage.body.substring(0, 15)
+    lastMessageSentAt = moment(lastMessage.createdAt).format('h:mm a')
+  }
 
   const handleClick = () => {
-    setCurrentChat(user)
-    console.log(user)
-    screenWidth < 768 && navigate('/chat')
+    dispatch(setConversationView('chat'))
+    navigate(`/${conversation.id}`, { replace: true })
   }
+
   return (
     <>
       <ListItem
@@ -54,7 +66,7 @@ const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
         <ListItemText
           primary={
             <Typography variant="subtitle2" sx={{ fontWeight: '600' }}>
-              {user.username}
+              {name}
             </Typography>
           }
           secondary={
@@ -65,17 +77,10 @@ const Conversation = ({ user, setCurrentChat }: ConversationProps) => {
                   variant="body2"
                   color="text.primary"
                 >
-                  {`${user.messages[user.messages.length - 1].body.substring(
-                    0,
-                    15
-                  )}...`}
+                  {lastMessageText}
                 </Typography>
               </Grid>
-              <Grid item>
-                {moment(
-                  user.messages[user.messages.length - 1].createdAt
-                ).format('h:mm a')}
-              </Grid>
+              <Grid item>{lastMessageSentAt}</Grid>
             </Grid>
           }
         />

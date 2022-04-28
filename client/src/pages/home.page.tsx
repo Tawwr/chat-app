@@ -1,23 +1,52 @@
-import { Avatar, Grid, Paper, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import ChatForm from '../components/chatForm.component'
-import MessagesContainer from '../components/messagesContainer.component'
-import UserList from '../components/userList.component'
-import { DummyUser } from '../types'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { getConversationByIdAPI, getUserConversationsAPI } from '../api'
+import Desktop from '../components/home/desktop.component'
+import MobileChat from '../components/home/mobileChat.component'
+import MobileMessages from '../components/home/mobileMessages.component'
+import { setConversationView } from '../redux/reducers/app'
+import {
+  setConversations,
+  setSelectedConversation
+} from '../redux/reducers/conversation'
+import { RootState } from '../redux/store'
 
-type HomeProps = {
-  setCurrentChat: (user: DummyUser) => void
-  currentChat: DummyUser
-  onlineUsers: DummyUser[]
-  setTitle: (title: string | JSX.Element) => void
-}
-const Home = ({
-  setCurrentChat,
-  currentChat,
-  onlineUsers,
-  setTitle,
-}: HomeProps) => {
+
+function HomePage() {
+  let { id } = useParams()
+
+  const [loading, setLoading] = useState(true)
+  const mobileDisplayComponent = useSelector(
+    (state: RootState) => state.app.conversationView
+  )
+
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+
+  const dispatch = useDispatch()
+
+  const fetchUserConversations = async () => {
+    try {
+      setLoading(true)
+      const conversations = await getUserConversationsAPI()
+      dispatch(setConversations(conversations))
+
+      if (id) {
+        const conversation = await getConversationByIdAPI(+id)
+        //todo check if data is empty
+
+        dispatch(setSelectedConversation(conversation))
+
+        dispatch(setConversationView('chat'))
+      } else {
+        //TODO: check if data is empty
+        dispatch(setSelectedConversation(conversations[0]))
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     window.addEventListener('resize', () => {
@@ -26,78 +55,28 @@ const Home = ({
   }, [screenWidth])
 
   useEffect(() => {
-    if (screenWidth < 768) {
-      setTitle('Messages')
-    }
+    fetchUserConversations()
   }, [])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
-      {screenWidth > 768 ? (
-        <Grid
-          container
-          justifyContent="center"
-          // alignItems='center'
-          spacing={3}
-          sx={{ minHeight: '100vh', width: '100%', margin: '50px 0 0' }}
-        >
-          <Grid item xs={12} md={3} sx={{ height: '80vh', width: '100%' }}>
-            <Paper elevation={0} sx={{ height: '100%' }}>
-              <Typography
-                component="div"
-                color="#000"
-                variant="h6"
-                sx={{ marginLeft: '20px', fontWeight: '600' }}
-              >
-                Messages
-              </Typography>
-              <UserList
-                setCurrentChat={setCurrentChat}
-                onlineUsers={onlineUsers}
-              />
-            </Paper>
-          </Grid>
-          <Grid item md={6} sx={{ height: '80vh', width: '100%' }}>
-            <Grid container spacing={2} sx={{ height: '80vh', width: '100%' }}>
-              <Grid item xs={12} sx={{ height: '100%', position: 'relative' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '18px',
-                    background: '#fff',
-                    width: '90%',
-                  }}
-                >
-                  <Avatar sx={{ display: 'inline-block' }} />
-                  <Typography component="span" variant="body1">
-                    {currentChat.username}
-                  </Typography>
-                </div>
-                <Paper elevation={0} sx={{ height: '100%', overflowY: 'auto' }}>
-                  <MessagesContainer currentChat={currentChat} />
-                </Paper>
-              </Grid>
-              <Grid item xs={12} sx={{ height: '20%' }}>
-                <ChatForm />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+      {screenWidth < 768 ? (
+        <>
+          {mobileDisplayComponent === 'messages' ? (
+            <MobileMessages />
+          ) : (
+            <MobileChat />
+          )}
+        </>
       ) : (
-        <div style={{ minHeight: '100vh', margin: '50px 0 0' }}>
-          <Typography
-            component="div"
-            color="#000"
-            variant="h6"
-            sx={{ marginLeft: '20px', fontWeight: '600' }}
-          >
-            Messages
-          </Typography>
-          <UserList setCurrentChat={setCurrentChat} onlineUsers={onlineUsers} />
-        </div>
+        <Desktop />
       )}
     </>
   )
 }
 
-export default Home
+export default HomePage

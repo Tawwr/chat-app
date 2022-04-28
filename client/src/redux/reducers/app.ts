@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { AppStateType, User } from '../../types'
+import { localStorageToken } from '../../constants'
+import { AppStateType, ConversationViewType, User } from '../../types'
 
 const initialState: AppStateType = {
   user: null,
-  token: localStorage.getItem('chat-auth-token') || '',
+  token: localStorageToken(),
+  conversationView: 'messages'
 }
 
 export const appSlice = createSlice({
@@ -20,9 +22,12 @@ export const appSlice = createSlice({
       state.user = null
       state.token = ''
     },
+    setConversationView: (state, { payload }: { payload: ConversationViewType }) => { 
+      state.conversationView = payload
+    }
   },
 })
 
-export const { setUser, signOut, setToken } = appSlice.actions
+export const { setUser, signOut, setToken,setConversationView } = appSlice.actions
 
 export default appSlice.reducer
